@@ -24,9 +24,9 @@ namespace Shutdauwn
         public MainWindow()
         {
             InitializeComponent();
-
-            // dll ind i exe!
+            
             // http://www.digitallycreated.net/Blog/61/combining-multiple-assemblies-into-a-single-exe-for-a-wpf-application
+            // compile dll into exe doesn't work :(
 
             this.minutesUpDown.Value = Properties.Settings.Default.minutesUpDown;
             this.hoursUpDown.Value = Properties.Settings.Default.hoursUpDown;
@@ -56,13 +56,16 @@ namespace Shutdauwn
 
         private void timerButton_Click(object sender, RoutedEventArgs e)
         {
+            minutesUpDown.Value = minutesUpDown.Value == null ? 0 : minutesUpDown.Value;
+            hoursUpDown.Value = hoursUpDown.Value == null ? 0 : hoursUpDown.Value;
+
             if (ShutDownTimer.TimerStarted)
             {
                 ShutDownTimer.StopTimer();
                 this.timerButton.Content = "Start shutdown timer";
                 this.timerStatusTextBlock.Text = "";
             }
-            else
+            else if(minutesUpDown.Value > 0 || hoursUpDown.Value > 0)
             {
                 ShutDownTimer.StartTimer(this.timerStatusTextBlock, (int)this.minutesUpDown.Value, (int)this.hoursUpDown.Value);
                 this.timerButton.Content = "Stop shutdown timer";
@@ -71,6 +74,9 @@ namespace Shutdauwn
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
+            minutesUpDown.Value = minutesUpDown.Value == null ? 0 : minutesUpDown.Value;
+            hoursUpDown.Value = hoursUpDown.Value == null ? 0 : hoursUpDown.Value;
+
             Properties.Settings.Default.minutesUpDown = (int)this.minutesUpDown.Value;
             Properties.Settings.Default.hoursUpDown = (int)this.hoursUpDown.Value;
             Properties.Settings.Default.Save();
