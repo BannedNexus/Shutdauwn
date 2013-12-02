@@ -90,7 +90,7 @@ namespace Shutdauwn
 #if DEBUG
                 // do nothing
 #else
-                MainWindow.Shutdown();
+                ShutdauwnForm.Shutdown();
 #endif
             }
             else if ((windowTitlePrefix == "VLC" || windowTitlePrefix == "") && !VlcMonitor.isVideoPlaying)

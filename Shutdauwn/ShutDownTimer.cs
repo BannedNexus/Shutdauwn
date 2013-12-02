@@ -53,7 +53,7 @@ namespace Shutdauwn
 #if DEBUG
                     // do nothing
 #else
-                    MainWindow.Shutdown();
+                    ShutdauwnForm.Shutdown();
 #endif
                     return;
                 }
