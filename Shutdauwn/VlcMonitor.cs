@@ -16,8 +16,8 @@ namespace Shutdauwn
 
         private enum VlcStatus { NotFound, Idle, MediaStopped, MediaStarted, MediaPlaying }
 
-        private static VlcStatus vlcStatus = VlcStatus.MediaStopped;
-        private static bool isVideoPlaying = false;
+        private VlcStatus vlcStatus = VlcStatus.MediaStopped;
+        private bool isVideoPlaying = false;
         private static Process vlcProcess;
 
         public static bool MonitorStarted { get { return VlcMonitor.instance == null ? false : VlcMonitor.instance.monitorRunning; } }
@@ -30,8 +30,8 @@ namespace Shutdauwn
         {
             this.monitorRunning = true;
             this.statusLabel = statusLabel;
+            this.vlcStatus = VlcStatus.MediaStopped;
             VlcMonitor.instance = this;
-            VlcMonitor.vlcStatus = VlcStatus.MediaStopped;
 
             this.monitorVlc(statusLabel);
         }
@@ -55,7 +55,7 @@ namespace Shutdauwn
 
         private void monitorVlc(Label statusLabel)
         {
-            VlcMonitor.isVideoPlaying = false;
+            this.isVideoPlaying = false;
 
             while(this.monitorRunning)
             {
@@ -63,12 +63,12 @@ namespace Shutdauwn
                 
                 if (VlcMonitor.vlcProcess == null)
                 {
-                    VlcMonitor.setStatus(statusLabel, VlcStatus.NotFound);
+                    this.setStatus(VlcStatus.NotFound);
                     Thread.Sleep(500);
                     continue;
                 }
 
-                VlcMonitor.finiteAutomaton(statusLabel);
+                this.finiteAutomaton();
 
                 Thread.Sleep(500);
             }
@@ -76,7 +76,7 @@ namespace Shutdauwn
             VlcMonitor.setStatus(statusLabel, "");
         }
 
-        private static void finiteAutomaton(Label statusLabel)
+        private void finiteAutomaton()
         {
             string windowTitlePrefix = VlcMonitor.vlcProcess.MainWindowTitle.Length > 2 ? VlcMonitor.vlcProcess.MainWindowTitle.Substring(0, 3) : VlcMonitor.vlcProcess.MainWindowTitle;
 
@@ -84,42 +84,38 @@ namespace Shutdauwn
             {
                 VlcMonitor.vlcProcess = null;
             }
-            if ((windowTitlePrefix == "VLC" || windowTitlePrefix == "") && VlcMonitor.isVideoPlaying)
+            if ((windowTitlePrefix == "VLC" || windowTitlePrefix == "") && this.isVideoPlaying)
             {
-                VlcMonitor.setStatus(statusLabel, VlcStatus.MediaStopped);
-#if DEBUG
-                // do nothing
-#else
+                this.setStatus(VlcStatus.MediaStopped);
                 ShutdauwnForm.Shutdown();
-#endif
             }
-            else if ((windowTitlePrefix == "VLC" || windowTitlePrefix == "") && !VlcMonitor.isVideoPlaying)
+            else if ((windowTitlePrefix == "VLC" || windowTitlePrefix == "") && !this.isVideoPlaying)
             {
-                VlcMonitor.setStatus(statusLabel, VlcStatus.Idle);
+                this.setStatus(VlcStatus.Idle);
             }
-            else if (!VlcMonitor.isVideoPlaying)
+            else if (!this.isVideoPlaying)
             {
-                VlcMonitor.isVideoPlaying = true;
-                VlcMonitor.setStatus(statusLabel, VlcStatus.MediaStarted);
+                this.isVideoPlaying = true;
+                this.setStatus(VlcStatus.MediaStarted);
             }
-            else if (VlcMonitor.isVideoPlaying)
+            else if (this.isVideoPlaying)
             {
-                VlcMonitor.setStatus(statusLabel, VlcStatus.MediaPlaying);
+                this.setStatus(VlcStatus.MediaPlaying);
             }
         }
 
-        private static void setStatus(Label statusLabel, VlcStatus vlcStatus)
+        private void setStatus(VlcStatus newVlcStatus)
         {
-            if (vlcStatus == VlcMonitor.vlcStatus)
+            if (newVlcStatus == this.vlcStatus)
             {
-                VlcMonitor.vlcStatus = vlcStatus;
+                this.vlcStatus = newVlcStatus;
                 return;
             }
 
-            VlcMonitor.vlcStatus = vlcStatus;
+            this.vlcStatus = newVlcStatus;
 
             string status;
-            switch (vlcStatus)
+            switch (newVlcStatus)
             {
                 case VlcStatus.MediaStopped:
                     status = "Media stopped, shutting down";
@@ -141,7 +137,7 @@ namespace Shutdauwn
                     break;
             }
 
-            VlcMonitor.setStatus(statusLabel, status);
+            VlcMonitor.setStatus(this.statusLabel, status);
         }
 
         private static void setStatus(Label statusLabel, string status)

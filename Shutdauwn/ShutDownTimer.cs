@@ -50,11 +50,7 @@ namespace Shutdauwn
                 if (DateTime.Now >= this.shutdownDateTime)
                 {
                     ShutDownTimer.setStatus(this.statusLabel, "Shutting down");
-#if DEBUG
-                    // do nothing
-#else
                     ShutdauwnForm.Shutdown();
-#endif
                     return;
                 }
                 ShutDownTimer.setStatus(this.statusLabel, ShutDownTimer.getTimeLeftString(this.shutdownDateTime));

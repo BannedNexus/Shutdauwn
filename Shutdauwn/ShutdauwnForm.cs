@@ -25,7 +25,11 @@ namespace Shutdauwn
         {
             // The argument /s is to shut down the computer
             // The argument /t 0 is to tell the process that the specified operation needs to be completed after 0 seconds
+#if DEBUG
+            // do nothing
+#else
             Process.Start("shutdown", "/s /t 0");
+#endif
         }
 
         private void monitorVlcButton_Click(object sender, EventArgs e)

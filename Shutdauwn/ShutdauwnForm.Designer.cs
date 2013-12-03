@@ -68,7 +68,7 @@
             this.tabPage1.Controls.Add(this.label1);
             this.tabPage1.Location = new System.Drawing.Point(4, 22);
             this.tabPage1.Name = "tabPage1";
-            this.tabPage1.Size = new System.Drawing.Size(212, 140);
+            this.tabPage1.Size = new System.Drawing.Size(212, 136);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "VLC";
             this.tabPage1.UseVisualStyleBackColor = true;
@@ -124,7 +124,7 @@
             this.groupBox2.Location = new System.Drawing.Point(109, 28);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Size = new System.Drawing.Size(65, 49);
-            this.groupBox2.TabIndex = 4;
+            this.groupBox2.TabIndex = 2;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "hours";
             // 
@@ -133,7 +133,7 @@
             this.hoursUpDown.Location = new System.Drawing.Point(6, 19);
             this.hoursUpDown.Name = "hoursUpDown";
             this.hoursUpDown.Size = new System.Drawing.Size(53, 20);
-            this.hoursUpDown.TabIndex = 3;
+            this.hoursUpDown.TabIndex = 2;
             // 
             // groupBox1
             // 
@@ -150,7 +150,7 @@
             this.minutesUpDown.Location = new System.Drawing.Point(6, 19);
             this.minutesUpDown.Name = "minutesUpDown";
             this.minutesUpDown.Size = new System.Drawing.Size(53, 20);
-            this.minutesUpDown.TabIndex = 3;
+            this.minutesUpDown.TabIndex = 1;
             // 
             // timerStatusLabel
             // 
@@ -169,7 +169,7 @@
             this.timerButton.Location = new System.Drawing.Point(8, 83);
             this.timerButton.Name = "timerButton";
             this.timerButton.Size = new System.Drawing.Size(196, 23);
-            this.timerButton.TabIndex = 1;
+            this.timerButton.TabIndex = 3;
             this.timerButton.Text = "Start timer";
             this.timerButton.UseVisualStyleBackColor = true;
             this.timerButton.Click += new System.EventHandler(this.timerButton_Click);
