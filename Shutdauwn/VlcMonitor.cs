@@ -16,14 +16,14 @@ namespace Shutdauwn
 
         private enum VlcStatus { NotFound, Idle, MediaStopped, MediaStarted, MediaPlaying }
 
+        private static string[] allowedVlcTitles = { "VLC (Direct3D output)" };
         private VlcStatus vlcStatus = VlcStatus.MediaStopped;
         private bool isVideoPlaying = false;
-        private static Process[] vlcProcesses;
+        private Process[] vlcProcesses;
 
         public static bool MonitorStarted { get { return VlcMonitor.instance == null ? false : VlcMonitor.instance.monitorRunning; } }
 
         private bool monitorRunning;
-
         private Label statusLabel;
 
         private VlcMonitor(Label statusLabel)
@@ -59,9 +59,9 @@ namespace Shutdauwn
 
             while(this.monitorRunning)
             {
-                VlcMonitor.vlcProcesses = VlcMonitor.getVlcProcesses();
-                
-                if (VlcMonitor.vlcProcesses == null)
+                this.vlcProcesses = VlcMonitor.getVlcProcesses();
+
+                if (this.vlcProcesses == null)
                 {
                     this.setStatus(VlcStatus.NotFound);
                     Thread.Sleep(500);
@@ -83,7 +83,7 @@ namespace Shutdauwn
 
             if(this.hasProcessesExited())
             {
-                VlcMonitor.vlcProcesses = null;
+                this.vlcProcesses = null;
             }
             else if(this.isVideoPlaying)
             {
@@ -123,33 +123,11 @@ namespace Shutdauwn
                     this.setStatus(VlcStatus.Idle);
                 }
             }
-            /*else if (this.isVideoPlaying && isVlcIdle && !isVlcStalling)
-            {
-                this.setStatus(VlcStatus.MediaStopped);
-                ShutdauwnForm.Shutdown();
-            }
-            else if (this.isVideoPlaying && isVlcStalling)
-            {
-                // do nothing, assume same state
-            }
-            else if (isVlcStalling && !this.isVideoPlaying)
-            {
-                this.setStatus(VlcStatus.Idle);
-            }
-            else if (!this.isVideoPlaying)
-            {
-                this.isVideoPlaying = true;
-                this.setStatus(VlcStatus.MediaStarted);
-            }
-            else if (this.isVideoPlaying)
-            {
-                this.setStatus(VlcStatus.MediaPlaying);
-            }*/
         }
 
         private bool hasProcessesExited()
         {
-            foreach (Process process in VlcMonitor.vlcProcesses)
+            foreach (Process process in this.vlcProcesses)
                 if(process.HasExited)
                     return true;
             return false;
@@ -160,18 +138,26 @@ namespace Shutdauwn
         {
             get
             {
-                foreach (Process process in VlcMonitor.vlcProcesses)
-                    if((process.MainWindowTitle.Length > 2 ? process.MainWindowTitle.Substring(0, 3) : process.MainWindowTitle) != "VLC")
+                foreach (Process process in this.vlcProcesses)
+                    if(this.isTitleNotIdle(process.MainWindowTitle))
                         return false;
                 return true;
             }
+        }
+
+        private bool isTitleNotIdle(string title)
+        {
+            foreach (string allowedTitle in VlcMonitor.allowedVlcTitles)
+                if(title == allowedTitle)
+                    return true;
+            return (title.Length > 2 ? title.Substring(0, 3) : title) != "VLC";
         }
 
         private bool IsVlcStalling
         {
             get
             {
-                foreach (Process process in VlcMonitor.vlcProcesses)
+                foreach (Process process in this.vlcProcesses)
                 {
                     string windowsTitlePrefix = process.MainWindowTitle.Length > 2 ? process.MainWindowTitle.Substring(0, 3) : process.MainWindowTitle;
                     if (process.Responding || windowsTitlePrefix != "")
