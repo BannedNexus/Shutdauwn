@@ -36,6 +36,7 @@ namespace Shutdauwn
             this.monitorVlc(statusLabel);
         }
 
+
         public static void StartMonitoring(Label statusLabel)
         {
             // Start a thread that will handle the monitoring
@@ -125,34 +126,47 @@ namespace Shutdauwn
             }
         }
 
+        /// <summary>
+        /// Determines whether all VLC processes has exited
+        /// </summary>
         private bool hasProcessesExited()
         {
             foreach (Process process in this.vlcProcesses)
-                if(process.HasExited)
-                    return true;
-            return false;
+                if(!process.HasExited)
+                    return false;
+            return true;
         }
 
-
+        /// <summary>
+        /// Determines whether all VLC processes are idle
+        /// </summary>
         private bool IsVlcIdle
         {
             get
             {
                 foreach (Process process in this.vlcProcesses)
-                    if(this.isTitleNotIdle(process.MainWindowTitle))
+                    if(this.isTitleActive(process.MainWindowTitle))
                         return false;
                 return true;
             }
         }
 
-        private bool isTitleNotIdle(string title)
+        /// <summary>
+        /// Determines whether the specified title is an active title
+        /// </summary>
+        /// <param name="title"></param>
+        private bool isTitleActive(string title)
         {
+            // Allowed titles contains some static titles that are allowed
             foreach (string allowedTitle in VlcMonitor.allowedVlcTitles)
                 if(title == allowedTitle)
                     return true;
-            return (title.Length > 2 ? title.Substring(0, 3) : title) != "VLC";
+            return (title.Length > 2 ? title.Substring(0, 3) : title) != "VLC" && title.Contains(" - VLC");
         }
 
+        /// <summary>
+        /// Determines whether all VLC processes are responding
+        /// </summary>
         private bool IsVlcStalling
         {
             get
@@ -160,13 +174,17 @@ namespace Shutdauwn
                 foreach (Process process in this.vlcProcesses)
                 {
                     string windowsTitlePrefix = process.MainWindowTitle.Length > 2 ? process.MainWindowTitle.Substring(0, 3) : process.MainWindowTitle;
-                    if (process.Responding || windowsTitlePrefix != "")
+                    if (process.Responding && windowsTitlePrefix != "") // sometime VLC title is an empty string. At least happens when VLC is closed
                         return false;
                 }
                 return true;
             }
         }
 
+        /// <summary>
+        /// Set the current state of the VLC monitoring, and change the visual status to an appropiate decsription
+        /// </summary>
+        /// <param name="newVlcStatus"></param>
         private void setStatus(VlcStatus newVlcStatus)
         {
             if (newVlcStatus == this.vlcStatus)

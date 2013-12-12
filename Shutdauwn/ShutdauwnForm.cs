@@ -13,12 +13,16 @@ namespace Shutdauwn
 {
     public partial class ShutdauwnForm : Form
     {
+        private static ShutdauwnForm instance;
+
         public ShutdauwnForm()
         {
+            ShutdauwnForm.instance = this;
             InitializeComponent();
 
             this.minutesUpDown.Value = Properties.Settings.Default.minutesUpDown;
             this.hoursUpDown.Value = Properties.Settings.Default.hoursUpDown;
+            this.minimizeCheckBox.Checked = Properties.Settings.Default.minimizeToTray;
         }
 
         public static void Shutdown()
@@ -28,6 +32,7 @@ namespace Shutdauwn
 #if DEBUG
             // do nothing
 #else
+            ShutdauwnForm.instance.saveSettings();
             Process.Start("shutdown", "/s /t 0");
 #endif
         }
@@ -64,9 +69,39 @@ namespace Shutdauwn
 
         private void ShutdauwnForm_FormClosing(object sender, FormClosingEventArgs e)
         {
+            this.saveSettings();
+        }
+
+        private void saveSettings()
+        {
             Properties.Settings.Default.minutesUpDown = (int)this.minutesUpDown.Value;
             Properties.Settings.Default.hoursUpDown = (int)this.hoursUpDown.Value;
+            Properties.Settings.Default.minimizeToTray = this.minimizeCheckBox.Checked;
             Properties.Settings.Default.Save();
+        }
+
+        private void ShutdauwnForm_Resize(object sender, EventArgs e)
+        {
+            if (this.minimizeCheckBox.Checked)
+            {
+                if (FormWindowState.Minimized == this.WindowState)
+                {
+                    this.notifyIcon.Visible = true;
+                    this.Hide();
+                }
+
+                else if (FormWindowState.Normal == this.WindowState)
+                {
+                    this.notifyIcon.Visible = false;
+                }
+            }
+        }
+
+        private void notifyIcon_Click(object sender, EventArgs e)
+        {
+            this.Show();
+            this.WindowState = FormWindowState.Normal;
+            this.notifyIcon.Visible = false;
         }
     }
 }

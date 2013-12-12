@@ -28,6 +28,8 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ShutdauwnForm));
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.vlcStatusLabel = new System.Windows.Forms.Label();
@@ -41,6 +43,9 @@
             this.timerStatusLabel = new System.Windows.Forms.Label();
             this.timerButton = new System.Windows.Forms.Button();
             this.label2 = new System.Windows.Forms.Label();
+            this.tabPage3 = new System.Windows.Forms.TabPage();
+            this.minimizeCheckBox = new System.Windows.Forms.CheckBox();
+            this.notifyIcon = new System.Windows.Forms.NotifyIcon(this.components);
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tabPage2.SuspendLayout();
@@ -48,12 +53,14 @@
             ((System.ComponentModel.ISupportInitialize)(this.hoursUpDown)).BeginInit();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.minutesUpDown)).BeginInit();
+            this.tabPage3.SuspendLayout();
             this.SuspendLayout();
             // 
             // tabControl1
             // 
             this.tabControl1.Controls.Add(this.tabPage1);
             this.tabControl1.Controls.Add(this.tabPage2);
+            this.tabControl1.Controls.Add(this.tabPage3);
             this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tabControl1.Location = new System.Drawing.Point(0, 0);
             this.tabControl1.Name = "tabControl1";
@@ -183,6 +190,33 @@
             this.label2.TabIndex = 0;
             this.label2.Text = "Shutdown in:";
             // 
+            // tabPage3
+            // 
+            this.tabPage3.Controls.Add(this.minimizeCheckBox);
+            this.tabPage3.Location = new System.Drawing.Point(4, 22);
+            this.tabPage3.Name = "tabPage3";
+            this.tabPage3.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage3.Size = new System.Drawing.Size(212, 136);
+            this.tabPage3.TabIndex = 1;
+            this.tabPage3.Text = "Settings";
+            this.tabPage3.UseVisualStyleBackColor = true;
+            // 
+            // minimizeCheckBox
+            // 
+            this.minimizeCheckBox.AutoSize = true;
+            this.minimizeCheckBox.Location = new System.Drawing.Point(3, 6);
+            this.minimizeCheckBox.Name = "minimizeCheckBox";
+            this.minimizeCheckBox.Size = new System.Drawing.Size(98, 17);
+            this.minimizeCheckBox.TabIndex = 0;
+            this.minimizeCheckBox.Text = "Minimize to tray";
+            this.minimizeCheckBox.UseVisualStyleBackColor = true;
+            // 
+            // notifyIcon
+            // 
+            this.notifyIcon.Icon = ((System.Drawing.Icon)(resources.GetObject("notifyIcon.Icon")));
+            this.notifyIcon.Text = "Click to open";
+            this.notifyIcon.Click += new System.EventHandler(this.notifyIcon_Click);
+            // 
             // ShutdauwnForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -190,11 +224,12 @@
             this.ClientSize = new System.Drawing.Size(220, 162);
             this.Controls.Add(this.tabControl1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.Name = "ShutdauwnForm";
-            this.ShowIcon = false;
             this.Text = "Shutdauwn";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.ShutdauwnForm_FormClosing);
+            this.Resize += new System.EventHandler(this.ShutdauwnForm_Resize);
             this.tabControl1.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
             this.tabPage1.PerformLayout();
@@ -204,6 +239,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.hoursUpDown)).EndInit();
             this.groupBox1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.minutesUpDown)).EndInit();
+            this.tabPage3.ResumeLayout(false);
+            this.tabPage3.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -223,6 +260,9 @@
         private System.Windows.Forms.NumericUpDown hoursUpDown;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.NumericUpDown minutesUpDown;
+        private System.Windows.Forms.TabPage tabPage3;
+        private System.Windows.Forms.CheckBox minimizeCheckBox;
+        private System.Windows.Forms.NotifyIcon notifyIcon;
 
     }
 }
