@@ -16,7 +16,10 @@ namespace Shutdauwn
 
         private enum VlcStatus { NotFound, Idle, MediaStopped, MediaStarted, MediaPlaying }
 
-        private static string[] allowedVlcTitles = { "VLC (Direct3D output)" };
+        private static string[] allowedVlcTitles = {
+                                                       "VLC (Direct3D output)", // happens when video isn't emedded in the main window
+                                                       "vlc" // happens when user clicks the top menu items
+                                                   };
         private VlcStatus vlcStatus = VlcStatus.MediaStopped;
         private bool isVideoPlaying = false;
         private Process[] vlcProcesses;
