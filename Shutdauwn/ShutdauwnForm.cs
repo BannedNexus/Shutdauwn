@@ -27,13 +27,16 @@ namespace Shutdauwn
 
         public static void Shutdown()
         {
-            // The argument /s is to shut down the computer
-            // The argument /t 0 is to tell the process that the specified operation needs to be completed after 0 seconds
 #if DEBUG
             // do nothing
 #else
             ShutdauwnForm.instance.saveSettings();
-            Process.Start("shutdown", "/s /t 0");
+
+            ProcessStartInfo processStartInfo = new ProcessStartInfo("shutdown", "/s /f /t 0");
+            processStartInfo.WindowStyle = ProcessWindowStyle.Hidden;
+            Process.Start(processStartInfo);
+
+            Environment.Exit(0); // Microsoft does not end child processes when main process is terminated
 #endif
         }
 
