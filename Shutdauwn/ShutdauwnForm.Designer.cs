@@ -46,6 +46,12 @@
             this.tabPage3 = new System.Windows.Forms.TabPage();
             this.minimizeCheckBox = new System.Windows.Forms.CheckBox();
             this.notifyIcon = new System.Windows.Forms.NotifyIcon(this.components);
+            this.tabPage4 = new System.Windows.Forms.TabPage();
+            this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.philipsHueIpTextBox = new System.Windows.Forms.TextBox();
+            this.groupBox4 = new System.Windows.Forms.GroupBox();
+            this.philipsHueUsernameTextBox = new System.Windows.Forms.TextBox();
+            this.turnOffCheckBox = new System.Windows.Forms.CheckBox();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tabPage2.SuspendLayout();
@@ -54,6 +60,9 @@
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.minutesUpDown)).BeginInit();
             this.tabPage3.SuspendLayout();
+            this.tabPage4.SuspendLayout();
+            this.groupBox3.SuspendLayout();
+            this.groupBox4.SuspendLayout();
             this.SuspendLayout();
             // 
             // tabControl1
@@ -61,6 +70,7 @@
             this.tabControl1.Controls.Add(this.tabPage1);
             this.tabControl1.Controls.Add(this.tabPage2);
             this.tabControl1.Controls.Add(this.tabPage3);
+            this.tabControl1.Controls.Add(this.tabPage4);
             this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tabControl1.Location = new System.Drawing.Point(0, 0);
             this.tabControl1.Name = "tabControl1";
@@ -192,10 +202,10 @@
             // 
             // tabPage3
             // 
+            this.tabPage3.Controls.Add(this.turnOffCheckBox);
             this.tabPage3.Controls.Add(this.minimizeCheckBox);
             this.tabPage3.Location = new System.Drawing.Point(4, 22);
             this.tabPage3.Name = "tabPage3";
-            this.tabPage3.Padding = new System.Windows.Forms.Padding(3);
             this.tabPage3.Size = new System.Drawing.Size(212, 136);
             this.tabPage3.TabIndex = 1;
             this.tabPage3.Text = "Settings";
@@ -204,7 +214,7 @@
             // minimizeCheckBox
             // 
             this.minimizeCheckBox.AutoSize = true;
-            this.minimizeCheckBox.Location = new System.Drawing.Point(3, 6);
+            this.minimizeCheckBox.Location = new System.Drawing.Point(3, 12);
             this.minimizeCheckBox.Name = "minimizeCheckBox";
             this.minimizeCheckBox.Size = new System.Drawing.Size(98, 17);
             this.minimizeCheckBox.TabIndex = 0;
@@ -216,6 +226,61 @@
             this.notifyIcon.Icon = ((System.Drawing.Icon)(resources.GetObject("notifyIcon.Icon")));
             this.notifyIcon.Text = "Click to open";
             this.notifyIcon.Click += new System.EventHandler(this.notifyIcon_Click);
+            // 
+            // tabPage4
+            // 
+            this.tabPage4.Controls.Add(this.groupBox4);
+            this.tabPage4.Controls.Add(this.groupBox3);
+            this.tabPage4.Location = new System.Drawing.Point(4, 22);
+            this.tabPage4.Name = "tabPage4";
+            this.tabPage4.Size = new System.Drawing.Size(212, 136);
+            this.tabPage4.TabIndex = 2;
+            this.tabPage4.Text = "Philips Hue";
+            this.tabPage4.UseVisualStyleBackColor = true;
+            // 
+            // groupBox3
+            // 
+            this.groupBox3.Controls.Add(this.philipsHueIpTextBox);
+            this.groupBox3.Location = new System.Drawing.Point(3, 12);
+            this.groupBox3.Name = "groupBox3";
+            this.groupBox3.Size = new System.Drawing.Size(206, 46);
+            this.groupBox3.TabIndex = 0;
+            this.groupBox3.TabStop = false;
+            this.groupBox3.Text = "Philips Hue IP";
+            // 
+            // philipsHueIpTextBox
+            // 
+            this.philipsHueIpTextBox.Location = new System.Drawing.Point(6, 19);
+            this.philipsHueIpTextBox.Name = "philipsHueIpTextBox";
+            this.philipsHueIpTextBox.Size = new System.Drawing.Size(194, 20);
+            this.philipsHueIpTextBox.TabIndex = 0;
+            // 
+            // groupBox4
+            // 
+            this.groupBox4.Controls.Add(this.philipsHueUsernameTextBox);
+            this.groupBox4.Location = new System.Drawing.Point(3, 64);
+            this.groupBox4.Name = "groupBox4";
+            this.groupBox4.Size = new System.Drawing.Size(206, 46);
+            this.groupBox4.TabIndex = 1;
+            this.groupBox4.TabStop = false;
+            this.groupBox4.Text = "Philips Hue username";
+            // 
+            // philipsHueUsernameTextBox
+            // 
+            this.philipsHueUsernameTextBox.Location = new System.Drawing.Point(6, 19);
+            this.philipsHueUsernameTextBox.Name = "philipsHueUsernameTextBox";
+            this.philipsHueUsernameTextBox.Size = new System.Drawing.Size(194, 20);
+            this.philipsHueUsernameTextBox.TabIndex = 0;
+            // 
+            // turnOffCheckBox
+            // 
+            this.turnOffCheckBox.AutoSize = true;
+            this.turnOffCheckBox.Location = new System.Drawing.Point(3, 36);
+            this.turnOffCheckBox.Name = "turnOffCheckBox";
+            this.turnOffCheckBox.Size = new System.Drawing.Size(183, 17);
+            this.turnOffCheckBox.TabIndex = 1;
+            this.turnOffCheckBox.Text = "Turn off Philips Hue on shutdown";
+            this.turnOffCheckBox.UseVisualStyleBackColor = true;
             // 
             // ShutdauwnForm
             // 
@@ -241,6 +306,11 @@
             ((System.ComponentModel.ISupportInitialize)(this.minutesUpDown)).EndInit();
             this.tabPage3.ResumeLayout(false);
             this.tabPage3.PerformLayout();
+            this.tabPage4.ResumeLayout(false);
+            this.groupBox3.ResumeLayout(false);
+            this.groupBox3.PerformLayout();
+            this.groupBox4.ResumeLayout(false);
+            this.groupBox4.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -263,6 +333,12 @@
         private System.Windows.Forms.TabPage tabPage3;
         private System.Windows.Forms.CheckBox minimizeCheckBox;
         private System.Windows.Forms.NotifyIcon notifyIcon;
+        private System.Windows.Forms.TabPage tabPage4;
+        private System.Windows.Forms.GroupBox groupBox4;
+        private System.Windows.Forms.TextBox philipsHueUsernameTextBox;
+        private System.Windows.Forms.GroupBox groupBox3;
+        private System.Windows.Forms.TextBox philipsHueIpTextBox;
+        private System.Windows.Forms.CheckBox turnOffCheckBox;
 
     }
 }

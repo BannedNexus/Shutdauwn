@@ -29,21 +29,24 @@ namespace Shutdauwn
         private bool monitorRunning;
         private Label statusLabel;
 
-        private VlcMonitor(Label statusLabel)
+        private ShutdauwnForm shutdawunForm;
+
+        private VlcMonitor(Label statusLabel, ShutdauwnForm shutdawunForm)
         {
             this.monitorRunning = true;
             this.statusLabel = statusLabel;
             this.vlcStatus = VlcStatus.MediaStopped;
             VlcMonitor.instance = this;
+            this.shutdawunForm = shutdawunForm;
 
             this.monitorVlc(statusLabel);
         }
 
 
-        public static void StartMonitoring(Label statusLabel)
+        public static void StartMonitoring(Label statusLabel, ShutdauwnForm shutdauwnForm)
         {
             // Start a thread that will handle the monitoring
-            new Task(() => new VlcMonitor(statusLabel)).Start();
+            new Task(() => new VlcMonitor(statusLabel, shutdauwnForm)).Start();
         }
 
         public static void StopMonitoring()
@@ -96,7 +99,7 @@ namespace Shutdauwn
                     if (IsVlcIdle)
                     {
                         this.setStatus(VlcStatus.MediaStopped);
-                        ShutdauwnForm.Shutdown();
+                        this.shutdawunForm.Shutdown();
                     }
                     else // not idle
                     {

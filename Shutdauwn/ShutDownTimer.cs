@@ -19,22 +19,25 @@ namespace Shutdauwn
         private DateTime shutdownDateTime;
         private Label statusLabel;
 
-        private ShutDownTimer(Label statusLabel, DateTime shutdownDateTime)
+        private ShutdauwnForm shutdawunForm;
+
+        private ShutDownTimer(Label statusLabel, DateTime shutdownDateTime, ShutdauwnForm shutdawunForm)
         {
             ShutDownTimer.instance = this;
 
             this.shutdownDateTime = shutdownDateTime;
             this.statusLabel = statusLabel;
             this.timerRunning = true;
+            this.shutdawunForm = shutdawunForm;
 
             this.timer();
         }
 
-        public static void StartTimer(Label statusLabel, int minutes, int hours)
+        public static void StartTimer(Label statusLabel, ShutdauwnForm shutdawunForm, int minutes, int hours)
         {
             TimeSpan duration = new TimeSpan(hours, minutes, 0);
 
-            new Task(() => new ShutDownTimer(statusLabel, DateTime.Now + duration)).Start();
+            new Task(() => new ShutDownTimer(statusLabel, DateTime.Now + duration, shutdawunForm)).Start();
         }
 
         public static void StopTimer()
@@ -50,7 +53,7 @@ namespace Shutdauwn
                 if (DateTime.Now >= this.shutdownDateTime)
                 {
                     ShutDownTimer.setStatus(this.statusLabel, "Shutting down");
-                    ShutdauwnForm.Shutdown();
+                    this.shutdawunForm.Shutdown();
                     return;
                 }
                 ShutDownTimer.setStatus(this.statusLabel, ShutDownTimer.getTimeLeftString(this.shutdownDateTime));

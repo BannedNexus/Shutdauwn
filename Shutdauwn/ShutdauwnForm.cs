@@ -5,6 +5,7 @@ using System.Data;
 using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
+using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -23,10 +24,15 @@ namespace Shutdauwn
             this.minutesUpDown.Value = Properties.Settings.Default.minutesUpDown;
             this.hoursUpDown.Value = Properties.Settings.Default.hoursUpDown;
             this.minimizeCheckBox.Checked = Properties.Settings.Default.minimizeToTray;
+            this.philipsHueIpTextBox.Text = Properties.Settings.Default.philipsHueIp;
+            this.philipsHueUsernameTextBox.Text = Properties.Settings.Default.philipsHueUsername;
+            this.turnOffCheckBox.Checked = Properties.Settings.Default.turnOffLightsOnShutdown;
         }
 
-        public static void Shutdown()
+        public async void Shutdown()
         {
+            if (this.turnOffCheckBox.Checked)
+                await this.turnOffPhilipsHue();
 #if DEBUG
             // do nothing
 #else
@@ -40,6 +46,20 @@ namespace Shutdauwn
 #endif
         }
 
+        private Task<HttpResponseMessage> turnOffPhilipsHue()
+        {
+            string path = String.Format("http://{0}/api/{1}/groups/0/action", this.philipsHueIpTextBox.Text, this.philipsHueUsernameTextBox.Text);
+
+            string turnOffCommand = "";
+            turnOffCommand += "{";
+            turnOffCommand += "\"on\":false,";
+            turnOffCommand += "\"transitiontime\":50";
+            turnOffCommand += "}";
+
+            HttpClient httpClient = new HttpClient();
+            return httpClient.PutAsync(new Uri(path), new StringContent(turnOffCommand, Encoding.UTF8, "application/json"));
+        }
+
         private void monitorVlcButton_Click(object sender, EventArgs e)
         {
             if (VlcMonitor.MonitorStarted)
@@ -50,7 +70,7 @@ namespace Shutdauwn
             }
             else
             {
-                VlcMonitor.StartMonitoring(this.vlcStatusLabel);
+                VlcMonitor.StartMonitoring(this.vlcStatusLabel, this);
                 this.monitorVlcButton.Text = "Stop monitoring VLC";
             }
         }
@@ -65,7 +85,7 @@ namespace Shutdauwn
             }
             else if (minutesUpDown.Value > 0 || hoursUpDown.Value > 0)
             {
-                ShutDownTimer.StartTimer(this.timerStatusLabel, (int)this.minutesUpDown.Value, (int)this.hoursUpDown.Value);
+                ShutDownTimer.StartTimer(this.timerStatusLabel, this, (int)this.minutesUpDown.Value, (int)this.hoursUpDown.Value);
                 this.timerButton.Text = "Stop shutdown timer";
             }
         }
@@ -80,6 +100,9 @@ namespace Shutdauwn
             Properties.Settings.Default.minutesUpDown = (int)this.minutesUpDown.Value;
             Properties.Settings.Default.hoursUpDown = (int)this.hoursUpDown.Value;
             Properties.Settings.Default.minimizeToTray = this.minimizeCheckBox.Checked;
+            Properties.Settings.Default.philipsHueIp = this.philipsHueIpTextBox.Text;
+            Properties.Settings.Default.philipsHueUsername = this.philipsHueUsernameTextBox.Text;
+            Properties.Settings.Default.turnOffLightsOnShutdown = this.turnOffCheckBox.Checked;
             Properties.Settings.Default.Save();
         }
 
