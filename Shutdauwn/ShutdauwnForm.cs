@@ -32,7 +32,13 @@ namespace Shutdauwn
         public async void Shutdown()
         {
             if (this.turnOffCheckBox.Checked)
-                await this.turnOffPhilipsHue();
+            {
+                try
+                {
+                    await this.turnOffPhilipsHue();
+                }
+                catch { /* ignore */ }
+            }
 #if DEBUG
             // do nothing
 #else
